@@ -21,6 +21,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.12.5",
     "@prisma/client": "^5.14.0",
     "@progress/kendo-licensing": "^1.5.1",
     "@progress/kendo-popup-common": "^1.9.2",
