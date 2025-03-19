@@ -111,7 +111,26 @@ const Create = () => {
 
       {showDialog && (
         <Dialog title="Confirm Repository Linking" onClose={() => setShowDialog(false)}>
-          <p>Are you sure you want to link this repository?</p>
+          <div className="space-y-4">
+            <p className="font-medium">Please review the repository details:</p>
+            <div className="space-y-2">
+              <div>
+                <span className="font-semibold">Project Name: </span>
+                <span>{projectName}</span>
+              </div>
+              <div>
+                <span className="font-semibold">GitHub Repository: </span>
+                <span>{repoUrl}</span>
+              </div>
+              {githubToken && (
+                <div>
+                  <span className="font-semibold">GitHub Token: </span>
+                  <span>...{githubToken.slice(-4)}</span>
+                </div>
+              )}
+            </div>
+            <p className="text-sm text-gray-600">Are you sure you want to link this repository?</p>
+          </div>
           <div className="flex justify-end mt-4 space-x-2">
             <Button onClick={() => setShowDialog(false)}>No</Button>
             <Button themeColor="primary" onClick={handleConfirm}>Yes</Button>
