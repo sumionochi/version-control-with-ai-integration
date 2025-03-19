@@ -4,16 +4,18 @@ import * as React from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { Drawer, DrawerContent, DrawerSelectEvent } from '@progress/kendo-react-layout';
 import { Button } from '@progress/kendo-react-buttons';
-import { inboxIcon, calendarIcon, heartIcon, linkIcon, bellIcon, menuIcon } from '@progress/kendo-svg-icons';
+import { inboxIcon, calendarIcon, heartIcon, linkIcon, bellIcon, menuIcon, plusCircleIcon } from '@progress/kendo-svg-icons';
+import LoadingState from './LoadingState';
+import { useEffect } from 'react';
+
 
 const items = [
-    { text: 'Inbox', svgIcon: inboxIcon, selected: true, route: '/dashboard' },
+    { text: 'Dashboard', svgIcon: inboxIcon, selected: true, route: '/dashboard' },
     { separator: true },
     { text: 'Notifications', svgIcon: bellIcon, route: '/notifications' },
     { text: 'Calendar', svgIcon: calendarIcon, route: '/calendar' },
     { separator: true },
-    { text: 'Attachments', svgIcon: linkIcon, route: '/attachments' },
-    { text: 'Favourites', svgIcon: heartIcon, route: '/favourites' }
+    { text: 'Create Project', svgIcon: plusCircleIcon, route: '/create' },
 ];
 
 interface DrawerContainerProps {
@@ -24,9 +26,17 @@ const DrawerContainer = ({ children }: DrawerContainerProps) => {
     const router = useRouter();
     const pathname = usePathname();
     const [expanded, setExpanded] = React.useState(true);
+    const [isLoading, setIsLoading] = React.useState(false);
     const [selected, setSelected] = React.useState(
         items.findIndex((x) => !x.separator && x.route === pathname) || 0
     );
+
+    useEffect(() => {
+        setIsLoading(true);
+        const timeout = setTimeout(() => setIsLoading(false), 500);
+        return () => clearTimeout(timeout);
+    }, [pathname]);
+
 
     const handleClick = () => {
         setExpanded(!expanded);
@@ -43,6 +53,7 @@ const DrawerContainer = ({ children }: DrawerContainerProps) => {
 
     return (
         <div className="drawer-container">
+            {isLoading && <LoadingState />}
             <div className="custom-toolbar">
                 <Button svgIcon={menuIcon} fillMode="flat" onClick={handleClick} />
                 <span className="mail-box">Version Control AI</span>
