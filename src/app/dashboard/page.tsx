@@ -1,10 +1,12 @@
+'use client'
+import { useUser } from '@clerk/nextjs'
 import React from 'react'
 
 export default function Dashboard() {
-  return (
-    <div>
-      <h1>Dashboard</h1>
-      {/* Add your dashboard content here */}
-    </div>
-  )
+    const { user } = useUser()
+    return (
+      <div>
+        {user?.firstName}
+      </div>
+    )
 }

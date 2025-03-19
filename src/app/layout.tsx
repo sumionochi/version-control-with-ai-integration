@@ -1,4 +1,5 @@
 import "@/styles/globals.css";
+import "@progress/kendo-theme-default/dist/all.css";
 
 import {
   ClerkProvider,
@@ -12,6 +13,7 @@ import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 
 import { TRPCReactProvider } from "@/trpc/react";
+import DrawerContainer from "./_components/Drawer";
 
 export const metadata: Metadata = {
   title: "Version Control With AI",
@@ -26,7 +28,11 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" className={`${GeistSans.variable}`}>
         <body>
-          <TRPCReactProvider>{children}</TRPCReactProvider>
+          <TRPCReactProvider>
+            <DrawerContainer>
+              {children}
+            </DrawerContainer>
+          </TRPCReactProvider>
         </body>
       </html>
     </ClerkProvider>
