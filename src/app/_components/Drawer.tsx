@@ -15,7 +15,7 @@ const items = [
     { text: 'Notifications', svgIcon: bellIcon, route: '/notifications' },
     { text: 'Calendar', svgIcon: calendarIcon, route: '/calendar' },
     { separator: true },
-    { text: 'Create Project', svgIcon: plusCircleIcon, route: '/create' },
+    { text: 'Sync Project', svgIcon: plusCircleIcon, route: '/create' },
 ];
 
 interface DrawerContainerProps {
