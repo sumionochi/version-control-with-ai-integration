@@ -13,6 +13,7 @@ import { Notification } from '@progress/kendo-react-notification';
 import { NotificationGroup } from '@progress/kendo-react-notification';
 import { Fade } from '@progress/kendo-react-animation';
 import { Loader } from "@progress/kendo-react-indicators";
+import getRefetch from '@/hooks/refetch';
 
 const generateRandomNames = () => {
   return Array.from({ length: 5 }, () => {
@@ -31,7 +32,7 @@ const Create = () => {
   const [error, setError] = useState(false);
 
   const createProject = api.project.createProject.useMutation();
-  
+  const refetch = getRefetch();
   const [errors, setErrors] = useState({
     projectName: '',
     repoUrl: ''
@@ -72,6 +73,7 @@ const Create = () => {
     }, {
       onSuccess: () => {
         console.log("project linked")
+        refetch()
         setShowDialog(false);
         setSuccess(true);
       },
