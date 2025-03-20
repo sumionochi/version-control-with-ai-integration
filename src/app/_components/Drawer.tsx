@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { Drawer, DrawerContent, DrawerSelectEvent } from '@progress/kendo-react-layout';
 import { Button } from '@progress/kendo-react-buttons';
-import { inboxIcon, calendarIcon, heartIcon,folderIcon, linkIcon, bellIcon, menuIcon, plusCircleIcon } from '@progress/kendo-svg-icons';
+import { inboxIcon, documentManagerIcon, wrenchIcon,folderIcon, linkIcon, bellIcon, menuIcon, plusCircleIcon } from '@progress/kendo-svg-icons';
 import LoadingState from './LoadingState';
 import { useEffect } from 'react';
 import GetProject from '@/hooks/getProjects';
@@ -19,9 +19,9 @@ interface DrawerItem {
 
 const defaultItems: DrawerItem[] = [
     { text: 'Dashboard', svgIcon: inboxIcon, selected: true, route: '/dashboard' },
+    { text: 'Workspace', svgIcon: documentManagerIcon, selected: true, route: '/workspace' },
+    { text: 'Buildspace', svgIcon: wrenchIcon, selected: true, route: '/buildspace' },
     { separator: true },
-    { text: 'Notifications', svgIcon: bellIcon, route: '/notifications' },
-    { text: 'Calendar', svgIcon: calendarIcon, route: '/calendar' },
     { separator: true },
     { text: 'Sync Project', svgIcon: plusCircleIcon, route: '/create' },
 ];
@@ -50,12 +50,13 @@ const DrawerContainer = ({ children }: DrawerContainerProps) => {
         if (projects && projects.length > 0) {
             try {
                 // Created project items with proper type
+                console.log("here is projects" ,projects)
                 const projectItems: DrawerItem[] = projects
                     .filter(project => project && project.name) 
                     .map(project => ({
                         text: project.name,
                         svgIcon: folderIcon,
-                        route: `/project/${projectId}`,
+                        route: `/project/${project.id}`,
                         selected: false
                     }));
 
