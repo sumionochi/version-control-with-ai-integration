@@ -35,6 +35,7 @@
     "@progress/kendo-react-intl": "^10.0.0",
     "@progress/kendo-react-labels": "^10.0.0",
     "@progress/kendo-react-layout": "^10.0.0",
+    "@progress/kendo-react-notification": "^10.0.0",
     "@progress/kendo-react-popup": "^10.0.0",
     "@progress/kendo-svg-icons": "^4.0.0",
     "@progress/kendo-theme-default": "^10.3.1",

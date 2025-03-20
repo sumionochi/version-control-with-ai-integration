@@ -8,6 +8,10 @@ import { Button } from '@progress/kendo-react-buttons';
 import { Label } from '@progress/kendo-react-labels';
 import { generate } from 'random-words';
 import { linkIcon } from '@progress/kendo-svg-icons';
+import { api } from '@/trpc/react';
+import { Notification } from '@progress/kendo-react-notification';
+import { NotificationGroup } from '@progress/kendo-react-notification';
+import { Fade } from '@progress/kendo-react-animation';
 
 const generateRandomNames = () => {
   return Array.from({ length: 5 }, () => {
@@ -22,6 +26,10 @@ const Create = () => {
   const [githubToken, setGithubToken] = useState('');
   const [showDialog, setShowDialog] = useState(false);
   const [suggestions] = useState(generateRandomNames());
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
+
+  const createProject = api.project.createProject.useMutation();
   
   const [errors, setErrors] = useState({
     projectName: '',
@@ -54,12 +62,28 @@ const Create = () => {
     }
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = (repoUrl:string, projectName:string, githubToken:string) => {
     // Handle the repository linking logic here
+    createProject.mutate({
+      githubUrl: repoUrl,
+      name: projectName,
+      githubToken: githubToken
+    }, {
+      onSuccess: () => {
+        console.log("project linked")
+        setShowDialog(false);
+        setSuccess(true);
+      },
+      onError: () => {
+        console.log("project died");
+        setError(true);
+      }
+    })
     setShowDialog(false);
   };
 
   return (
+    <>
     <div className="p-8 max-w-2xl mx-auto">
       <h1 className="text-2xl font-bold mb-6">Link your GitHub Repository</h1>
       
@@ -133,11 +157,42 @@ const Create = () => {
           </div>
           <div className="flex justify-end mt-4 space-x-2">
             <Button onClick={() => setShowDialog(false)}>No</Button>
-            <Button themeColor="primary" onClick={handleConfirm}>Yes</Button>
+            <Button themeColor="primary" onClick={() => handleConfirm(repoUrl, projectName, githubToken)}>Yes</Button>
           </div>
         </Dialog>
       )}
     </div>
+    <NotificationGroup
+    style={{
+      right: 0,
+      bottom: 0,
+      alignItems: 'flex-start',
+      flexWrap: 'wrap-reverse',
+      position: 'fixed'
+    }}
+  >
+    <Fade>
+      {success && (
+        <Notification
+          type={{ style: 'success', icon: true }}
+          closable={true}
+          onClose={() => setSuccess(false)}
+        >
+          <span>Project successfully linked!</span>
+        </Notification>
+      )}
+      {error && (
+        <Notification
+          type={{ style: 'error', icon: true }}
+          closable={true}
+          onClose={() => setError(false)}
+        >
+          <span>Failed to link project. Please try again.</span>
+        </Notification>
+      )}
+    </Fade>
+    </NotificationGroup>
+    </>
   );
 };
 
