@@ -10,52 +10,6 @@ import { SvgIcon } from "@progress/kendo-react-common";
 import { TileLayout } from '@progress/kendo-react-layout';
 import Commits from './commits';
 
-const tiles: Array<any> = [
-  {
-    defaultPosition: { col: 1, colSpan: 2, rowSpan: 1 },
-    header: "Project Overview",
-    body: (
-      <div className="p-4">
-        <h3 className="font-semibold mb-2">Repository Statistics</h3>
-        <p>View project metrics and analytics for your repository</p>
-      </div>
-    )
-  },
-  {
-    defaultPosition: { col: 3, colSpan: 1, rowSpan: 1 },
-    header: "Recent Activities",
-    body: (
-      <div className="p-4">
-        <h3 className="font-semibold mb-2">Latest Updates</h3>
-        <p>Track recent changes and commits</p>
-      </div>
-    ),
-    resizable: 'horizontal'
-  },
-  {
-    defaultPosition: { col: 1, colSpan: 1, rowSpan: 1 },
-    header: "Team Members",
-    body: (
-      <div className="p-4">
-        <h3 className="font-semibold mb-2">Collaborators</h3>
-        <p>Manage project contributors and roles</p>
-      </div>
-    ),
-    resizable: 'vertical'
-  },
-  {
-    defaultPosition: { col: 2, colSpan: 2, rowSpan: 1 },
-    header: "Project Files",
-    body: (
-      <div className="p-4">
-        <h3 className="font-semibold mb-2">File Explorer</h3>
-        <p>Browse and manage repository contents</p>
-      </div>
-    ),
-    reorderable: false
-  }
-];
-
 const ProjectPage = () => {
   const params = useParams();
   const { projects } = GetProject();
@@ -125,16 +79,9 @@ const ProjectPage = () => {
           <Button themeColor="primary" fillMode="flat">Project Settings</Button>
         </CardActions>
       </Card>
-      <Commits/>            
-      <div className="">
-        <TileLayout
-          columns={3}
-          rowHeight={150}
-          gap={{ rows: 10, columns: 10 }}
-          items={tiles}
-          className="bg-white rounded-lg"
-        />
-      </div>
+      <div className='w-full'>
+        <Commits/>  
+      </div>          
     </div>
   );
 };

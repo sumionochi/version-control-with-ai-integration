@@ -1,0 +1,60 @@
+/* Add these styles to your globals.css */
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.stepper-container {
+    max-width: 100%;
+    overflow-x: visible;
+  }
+  
+  .custom-stepper .k-step-label,
+  .custom-stepper .k-step-text {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    max-width: none !important;
+    width: 100% !important;
+  }
+  
+  .custom-stepper .k-step-description {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    max-width: none !important;
+    width: 100% !important;
+  }
+  
+  .commit-description {
+    padding: 4px 0;
+    white-space: normal;
+    word-break: break-word;
+    width: 100%;
+  }
+  
+  /* Fix for popover positioning */
+  .k-popover-content {
+    max-width: 300px;
+    word-wrap: break-word;
+  }
+  
+  /* Ensure buttons don't cause overflow */
+  .commit-description button {
+    width: 100%;
+    text-align: left;
+    white-space: normal;
+    word-break: break-word;
+  }
+  
+  /* Fixes for mobile and smaller screens */
+  @media (max-width: 768px) {
+    .stepper-container {
+      max-width: 90vw;
+    }
+  }
