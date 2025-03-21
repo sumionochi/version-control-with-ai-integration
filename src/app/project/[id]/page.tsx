@@ -8,6 +8,7 @@ import { Button } from '@progress/kendo-react-buttons';
 import { folderIcon, linkIcon } from '@progress/kendo-svg-icons';
 import { SvgIcon } from "@progress/kendo-react-common";
 import { TileLayout } from '@progress/kendo-react-layout';
+import Commits from './commits';
 
 const tiles: Array<any> = [
   {
@@ -124,7 +125,7 @@ const ProjectPage = () => {
           <Button themeColor="primary" fillMode="flat">Project Settings</Button>
         </CardActions>
       </Card>
-
+      <Commits/>            
       <div className="">
         <TileLayout
           columns={3}
