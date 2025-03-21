@@ -8,6 +8,7 @@ import { inboxIcon, documentManagerIcon, wrenchIcon,folderIcon, linkIcon, bellIc
 import LoadingState from './LoadingState';
 import { useEffect } from 'react';
 import GetProject from '@/hooks/getProjects';
+import { Switch } from '@progress/kendo-react-inputs';
 
 interface DrawerItem {
     text?: string;
@@ -37,6 +38,13 @@ const DrawerContainer = ({ children }: DrawerContainerProps) => {
     const [isLoading, setIsLoading] = React.useState(false);
     const [drawerItems, setDrawerItems] = React.useState<DrawerItem[]>(defaultItems);
     const [selected, setSelected] = React.useState(defaultItems.findIndex((x) => !x.separator && x.route === pathname) || 0);
+    const [isDarkMode, setIsDarkMode] = React.useState(false); 
+    
+    // Added this useEffect to handle initial theme check
+    React.useEffect(() => {
+        const savedTheme = localStorage.getItem('theme');
+        setIsDarkMode(savedTheme === 'dark');
+    }, []);
     
     const {projects, projectId} = GetProject();
 
@@ -71,7 +79,6 @@ const DrawerContainer = ({ children }: DrawerContainerProps) => {
                 setDrawerItems(newItems);
             } catch (error) {
                 console.error("Error processing projects:", error);
-                // Fallback to default items if there's an error
                 setDrawerItems(defaultItems);
             }
         }
@@ -90,12 +97,46 @@ const DrawerContainer = ({ children }: DrawerContainerProps) => {
         }
     };
 
+    useEffect(() => {
+        if (isDarkMode) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            document.body.classList.add('k-dark');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+            document.body.classList.remove('k-dark');
+            localStorage.setItem('theme', 'light');
+        }
+    }, [isDarkMode]);
+
+    const handleThemeChange = (event: any) => {
+        const newTheme = event.target.value;
+        setIsDarkMode(newTheme);
+        
+        if (newTheme) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            document.body.classList.add('k-dark');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+            document.body.classList.remove('k-dark');
+        }
+    };
+
     return (
         <div className="drawer-container">
             {isLoading && <LoadingState />}
-            <div className="custom-toolbar">
-                <Button svgIcon={menuIcon} fillMode="flat" onClick={handleClick} />
-                <span className="mail-box">Version Control AI</span>
+            <div className="custom-toolbar flex flex-row justify-between items-center">
+                <div>
+                    <Button svgIcon={menuIcon} fillMode="flat" onClick={handleClick} />
+                    <span className="mail-box">Version Control AI</span>
+                </div>
+                <div>
+                    <Switch 
+                        onChange={handleThemeChange}
+                        checked={isDarkMode}
+                        className="theme-switch"
+                    />
+                </div>
             </div>
             <Drawer
                 expanded={expanded}

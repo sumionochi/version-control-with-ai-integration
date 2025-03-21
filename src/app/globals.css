@@ -1,4 +1,37 @@
-/* Add these styles to your globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background-primary: #ffffff;
+  --background-secondary: #f8f9fa;
+  --text-primary: #1a1a1a;
+  --text-secondary: #666666;
+  --border-color: #e0e0e0;
+  --accent-color: #d4d6d7;
+}
+
+[data-theme='dark'] {
+  --background-primary: #1a1a1a;
+  --background-secondary: #2d2d2d;
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  --border-color: #404040;
+  --accent-color: #3a3b3c;
+}
+
+/* Add these styles for the switch */
+.k-switch.theme-switch {
+  --switch-track-background: var(--text-secondary);
+  --switch-thumb-background: var(--background-primary);
+  --switch-hovered-track-background: var(--accent-color);
+  --switch-checked-track-background: var(--accent-color);
+}
+
+[data-theme='dark'] .k-switch.theme-switch {
+  --switch-track-background: var(--text-secondary);
+  --switch-thumb-background: var(--background-primary);
+}
 
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
@@ -58,3 +91,290 @@
       max-width: 90vw;
     }
   }
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Add these styles for scroll buttons */
+.stepper-container {
+  position: relative;
+  width: 100%;
+}
+
+.scroll-button {
+  background-color: var(--background-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.scroll-left {
+  left: 0;
+}
+
+.scroll-right {
+  right: 0;
+}
+
+.custom-stepper .k-step-label,
+.custom-stepper .k-step-text {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  max-width: none !important;
+  width: 100% !important;
+}
+
+.custom-stepper .k-step-description {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  max-width: none !important;
+  width: 100% !important;
+}
+
+.commit-description {
+  padding: 4px 0;
+  white-space: normal;
+  word-break: break-word;
+  width: 100%;
+}
+
+/* Fix for popover positioning */
+.k-popover-content {
+  max-width: 300px;
+  word-wrap: break-word;
+}
+
+/* Ensure buttons don't cause overflow */
+.commit-description button {
+  width: 100%;
+  text-align: left;
+  white-space: normal;
+  word-break: break-word;
+}
+
+/* Fixes for mobile and smaller screens */
+@media (max-width: 768px) {
+  .stepper-container {
+    max-width: 90vw;
+  }
+}
+
+
+/* Stepper Dark Mode Styles */
+[data-theme='dark'] .k-stepper .k-step-current .k-step-label {
+    color: white !important;
+}
+
+[data-theme='dark'] .k-stepper .k-step-label {
+    color: #a1a1aa !important;
+}
+
+[data-theme='dark'] .k-stepper .k-step-indicator {
+    background-color: #27272a !important;
+    border-color: #3f3f46 !important;
+}
+
+[data-theme='dark'] .k-stepper .k-step-current .k-step-indicator {
+    background-color: #3f3f46 !important;
+    border-color: #52525b !important;
+}
+
+[data-theme='dark'] .k-stepper .k-step-link:hover .k-step-indicator {
+    background-color: #3f3f46 !important;
+}
+
+[data-theme='dark'] .k-stepper .k-step svg {
+    color: white !important;
+}
+
+/* Add these styles for the Stepper scroll behavior */
+.stepper-scroll {
+  overflow-x: auto;
+  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+  cursor: grab;
+}
+
+.stepper-scroll::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari, Opera */
+}
+
+.stepper-scroll:active {
+  cursor: grabbing;
+}
+
+/* Update the scroll button styles */
+.scroll-button.k-button {
+  background-color: var(--background-primary) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 30% !important;
+  width: 36px !important;
+  height: 36px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-theme='dark'] .scroll-button.k-button {
+  background-color: var(--background-secondary) !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Drawer Container and Layout Styles */
+.drawer-container {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background-primary);
+}
+
+.custom-toolbar {
+  padding: 8px 8px 8px 8px;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+}
+
+.mail-box {
+  margin-left: 16px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Drawer Item Styles */
+.k-drawer-container {
+  flex: 1;
+  background-color: var(--background-secondary);
+}
+
+.k-drawer-item {
+  user-select: none;
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+}
+
+.k-drawer-item:hover {
+  color: var(--accent-color);
+  background-color: var(--background-primary);
+}
+
+.k-drawer-item.k-selected {
+  color: var(--accent-color);
+  background-color: var(--background-secondary);
+}
+
+/* Theme Switch Styles */
+.theme-switch {
+  margin-right: 1rem;
+}
+
+.k-drawer {
+  border-right: 1px solid var(--border-color);
+}
+
+/* Dark Mode Specific Styles */
+[data-theme='dark'] .k-drawer-item {
+  color: var(--text-primary);
+}
+
+[data-theme='dark'] .k-drawer-item:hover {
+  background-color: var(--background-secondary);
+}
+
+[data-theme='dark'] .k-drawer {
+  background-color: var(--background-primary);
+}
+
+/* Card styles */
+.k-card {
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.k-card-header {
+  border-color: var(--border-color);
+}
+
+.k-card-actions {
+  border-top: 1px solid var(--border-color);
+}
+
+/* Dark mode specific card styles */
+[data-theme='dark'] .k-card {
+  background-color: var(--background-secondary);
+  border-color: var(--border-color);
+}
+
+[data-theme='dark'] .k-card-header {
+  background-color: var(--background-secondary);
+}
+
+[data-theme='dark'] .k-card-body {
+  color: var(--text-primary);
+}
+
+[data-theme='dark'] .bg-gray-100 {
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+}
+
+[data-theme='dark'] .k-card svg {
+  color: var(--text-primary);
+}
+
+[data-theme='dark'] .k-card a {
+  color: var(--accent-color);
+}
+
+[data-theme='dark'] .k-card-actions {
+  background-color: var(--background-secondary);
+  border-color: var(--border-color);
+}
+
+/* Card text and link styles */
+.k-card h1 {
+  color: var(--text-primary);
+}
+
+.k-card a {
+  color: #2563eb;
+  transition: color 0.3s ease;
+}
+
+.k-card a:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+[data-theme='dark'] .k-card h1 {
+  color: white;
+}
+
+[data-theme='dark'] .k-card a {
+  color: #60a5fa;
+}
+
+[data-theme='dark'] .k-card a:hover {
+  color: #93c5fd;
+}

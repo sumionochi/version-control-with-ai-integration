@@ -1,4 +1,4 @@
-import "@/styles/globals.css";
+import "./globals.css";
 import "@progress/kendo-theme-default/dist/all.css";
 
 import {
@@ -26,8 +26,8 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <ClerkProvider>
-      <html lang="en" className={`${GeistSans.variable}`}>
-        <body>
+      <html lang="en" className={`${GeistSans.variable}`} suppressHydrationWarning>
+        <body suppressHydrationWarning>
           <TRPCReactProvider>
             <DrawerContainer>
               {children}

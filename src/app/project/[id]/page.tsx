@@ -7,13 +7,14 @@ import { Card, CardHeader, CardBody, CardTitle, CardActions, CardImage } from '@
 import { Button } from '@progress/kendo-react-buttons';
 import { folderIcon, linkIcon } from '@progress/kendo-svg-icons';
 import { SvgIcon } from "@progress/kendo-react-common";
-import { TileLayout } from '@progress/kendo-react-layout';
-import Commits from './commits';
+import Commits from '../../../components/commits';
+import { useDarkMode } from '@/hooks/useDarkMode';
 
 const ProjectPage = () => {
   const params = useParams();
   const { projects } = GetProject();
   const currentProject = projects?.find(project => project.id === params.id);
+  const isDarkMode = useDarkMode();
 
   if (!currentProject) {
     return (
@@ -30,7 +31,7 @@ const ProjectPage = () => {
   };
 
   return (
-    <div className="p-8 flex flex-col justify-start items-start">
+    <div className={`min-h-screen ${isDarkMode ? 'bg-black/50 text-white' : 'bg-white text-black'} transition-colors duration-200 p-8 flex flex-col justify-start items-start`}>
       <Card style={{ margin: '0 0 2rem 0' }}>
         <div 
               className="relative h-[250px] overflow-hidden cursor-pointer" 
@@ -66,7 +67,7 @@ const ProjectPage = () => {
                   href={currentProject.githubUrl} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline"
+                  className="hover:underline"
                 >
                   {currentProject.githubUrl}
                 </a>
@@ -80,6 +81,7 @@ const ProjectPage = () => {
         </CardActions>
       </Card>
       <div className='w-full'>
+        
         <Commits/>  
       </div>          
     </div>

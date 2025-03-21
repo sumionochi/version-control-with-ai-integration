@@ -14,6 +14,7 @@ import { NotificationGroup } from '@progress/kendo-react-notification';
 import { Fade } from '@progress/kendo-react-animation';
 import { Loader } from "@progress/kendo-react-indicators";
 import getRefetch from '@/hooks/refetch';
+import { useDarkMode } from '@/hooks/useDarkMode';
 
 const generateRandomNames = () => {
   return Array.from({ length: 5 }, () => {
@@ -30,6 +31,7 @@ const Create = () => {
   const [suggestions] = useState(generateRandomNames());
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const isDarkMode = useDarkMode();
 
   const createProject = api.project.createProject.useMutation();
   const refetch = getRefetch();
@@ -86,7 +88,7 @@ const Create = () => {
   };
 
   return (
-    <>
+    <div className={`min-h-screen ${isDarkMode ? 'bg-black/50 text-white' : 'bg-white text-black'} transition-colors duration-200`}>
     <div className="p-8 max-w-2xl mx-auto">
       <h1 className="text-2xl font-bold mb-6">Link your GitHub Repository</h1>
       
@@ -204,7 +206,7 @@ const Create = () => {
       )}
     </Fade>
     </NotificationGroup>
-    </>
+    </div>
   );
 };
 
