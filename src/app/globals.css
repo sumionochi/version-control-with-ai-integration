@@ -378,3 +378,58 @@
 [data-theme='dark'] .k-card a:hover {
   color: #93c5fd;
 }
+
+/* Commit Tiles Styles */
+.commit-tiles .k-tilelayout-item {
+  background-color: var(--background-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.commit-tiles .k-tilelayout-item-header {
+  background-color: var(--background-secondary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 8px;
+}
+
+[data-theme='dark'] .commit-tiles .k-tilelayout-item {
+  background-color: var(--background-secondary);
+}
+
+[data-theme='dark'] .commit-tiles .k-tilelayout-item-header {
+  background-color: var(--background-primary);
+}
+
+.commit-tiles .k-tilelayout-item-body {
+  padding: 0;
+}
+
+/* Tile focus animation styles */
+.commit-tiles .k-tilelayout-item {
+  transition: all 0.5s ease-in-out;
+}
+
+.commit-tiles .k-tilelayout-item-header,
+.commit-tiles .k-tilelayout-item-body {
+  transition: background-color 0.5s ease-in-out;
+}
+
+[data-theme='dark'] .commit-tiles .k-tilelayout-item[data-focused="true"] {
+  border-color: rgba(249, 115, 22, 0.4);
+}
+
+.commit-message-popup {
+  z-index: 1000;
+}
+
+.commit-message-popup .k-popup-content {
+  border: 1px solid var(--border-color);
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+}
+
+[data-theme='dark'] .commit-message-popup .k-popup-content {
+  background-color: var(--background-secondary);
+  border-color: var(--border-color);
+}

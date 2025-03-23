@@ -7,7 +7,7 @@ import { Card, CardHeader, CardBody, CardTitle, CardActions, CardImage } from '@
 import { Button } from '@progress/kendo-react-buttons';
 import { folderIcon, linkIcon } from '@progress/kendo-svg-icons';
 import { SvgIcon } from "@progress/kendo-react-common";
-import Commits from '../../../components/commits';
+import Commits from '../../../components/Commits';
 import { useDarkMode } from '@/hooks/useDarkMode';
 
 const ProjectPage = () => {
@@ -24,7 +24,7 @@ const ProjectPage = () => {
     );
   }
 
-  // Extract owner and repo from GitHub URL
+  // Extracted owner and repo from GitHub URL
   const getOgImage = (githubUrl: string) => {
     const urlParts = githubUrl.replace('https://github.com/', '').split('/');
     return `https://opengraph.githubassets.com/1/${urlParts[0]}/${urlParts[1]}`;
@@ -80,8 +80,7 @@ const ProjectPage = () => {
           <Button themeColor="primary" fillMode="flat">Project Settings</Button>
         </CardActions>
       </Card>
-      <div className='w-full'>
-        
+      <div className='w-full flex flex-col'>
         <Commits/>  
       </div>          
     </div>
