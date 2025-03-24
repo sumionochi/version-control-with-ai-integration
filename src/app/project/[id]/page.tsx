@@ -1,8 +1,9 @@
 'use client';
 
-import { useParams } from 'next/navigation';
-import React from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import React, { useEffect } from 'react';
 import GetProject from '@/hooks/getProjects';
+import { useUser } from '@clerk/nextjs';
 import { Card, CardHeader, CardBody, CardTitle, CardActions, CardImage } from '@progress/kendo-react-layout';
 import { Button } from '@progress/kendo-react-buttons';
 import { folderIcon, linkIcon } from '@progress/kendo-svg-icons';
@@ -13,7 +14,17 @@ import RetrievalCard from '@/components/RetrievalCard';
 
 const ProjectPage = () => {
   const params = useParams();
-  const { projects } = GetProject();
+  const { user } = useUser();
+  const router = useRouter();
+  
+  useEffect(() => {
+    if (!user) {
+      router.push('/sign-in');
+      return;
+    }
+  }, [user, router]);
+
+  const { projects } = user ? GetProject() : { projects: [] };
   const currentProject = projects?.find(project => project.id === params.id);
   const isDarkMode = useDarkMode();
 

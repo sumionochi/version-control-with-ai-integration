@@ -9,6 +9,9 @@ import LoadingState from './LoadingState';
 import { useEffect } from 'react';
 import GetProject from '@/hooks/getProjects';
 import { Switch } from '@progress/kendo-react-inputs';
+import { useClerk, useUser } from '@clerk/nextjs';
+import { Avatar } from '@progress/kendo-react-layout';
+import { Popup } from '@progress/kendo-react-popup';
 
 interface DrawerItem {
     text?: string;
@@ -19,7 +22,6 @@ interface DrawerItem {
 }
 
 const defaultItems: DrawerItem[] = [
-    { text: 'Dashboard', svgIcon: inboxIcon, selected: true, route: '/dashboard' },
     { text: 'Workspace', svgIcon: documentManagerIcon, selected: true, route: '/workspace' },
     { text: 'Buildspace', svgIcon: wrenchIcon, selected: true, route: '/buildspace' },
     { separator: true },
@@ -32,14 +34,28 @@ interface DrawerContainerProps {
 }
 
 const DrawerContainer = ({ children }: DrawerContainerProps) => {
+    const { signOut } = useClerk();
+    const { user } = useUser();
     const router = useRouter();
     const pathname = usePathname();
+    
+    React.useEffect(() => {
+        if (!user) {
+            router.push('/sign-in');
+            return;
+        }
+    }, [user, router]);
+
     const [expanded, setExpanded] = React.useState(true);
     const [isLoading, setIsLoading] = React.useState(false);
     const [drawerItems, setDrawerItems] = React.useState<DrawerItem[]>(defaultItems);
     const [selected, setSelected] = React.useState(defaultItems.findIndex((x) => !x.separator && x.route === pathname) || 0);
     const [isDarkMode, setIsDarkMode] = React.useState(false); 
+    const [showUserMenu, setShowUserMenu] = React.useState(false);
+    const avatarRef = React.useRef<HTMLDivElement>(null);
     
+    // Only call GetProject when user is authenticated
+
     // Added this useEffect to handle initial theme check
     React.useEffect(() => {
         const savedTheme = localStorage.getItem('theme');
@@ -130,12 +146,61 @@ const DrawerContainer = ({ children }: DrawerContainerProps) => {
                     <Button svgIcon={menuIcon} fillMode="flat" onClick={handleClick} />
                     <span className="mail-box">Version Control AI</span>
                 </div>
-                <div>
+                <div className='flex flex-row gap-2 items-center'>
                     <Switch 
                         onChange={handleThemeChange}
                         checked={isDarkMode}
                         className="theme-switch"
                     />
+                    <div ref={avatarRef} onClick={() => {
+                        if (user) {
+                            setShowUserMenu(!showUserMenu)
+                        } else {
+                            router.push('/sign-in')
+                        }
+                    }}>
+                        <Avatar type="image" className="cursor-pointer">
+                            {user ? (
+                                <img 
+                                    src={user.imageUrl} 
+                                    alt={user.fullName || 'User'} 
+                                    style={{ width: '100%', height: '100%' }}
+                                />
+                            ) : (
+                                <div className="w-full h-full flex items-center justify-center bg-blue-500 text-white">
+                                    A
+                                </div>
+                            )}
+                        </Avatar>
+                    </div>
+                    {user && (
+                        <Popup
+                            anchor={avatarRef.current}
+                            show={showUserMenu}
+                            popupClass={`p-4 rounded-lg shadow-lg ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}
+                            animate={false}
+                            onClose={() => setShowUserMenu(false)}
+                        >
+                            <div className="flex flex-col gap-3 min-w-[200px] p-4">
+                                <div className={`font-medium ${isDarkMode ? 'text-gray-900' : 'text-gray-900'}`}>
+                                    {user?.fullName}
+                                </div>
+                                <div className={`text-sm ${isDarkMode ? 'text-gray-600' : 'text-gray-600'}`}>
+                                    {user?.emailAddresses[0]?.emailAddress}
+                                </div>
+                                <Button
+                                    onClick={() => {
+                                        setShowUserMenu(false);
+                                        signOut(() => router.push('/'));
+                                    }}
+                                    className="mt-2"
+                                    themeColor={'error'}
+                                >
+                                    Sign Out
+                                </Button>
+                            </div>
+                        </Popup>
+                    )}
                 </div>
             </div>
             <Drawer

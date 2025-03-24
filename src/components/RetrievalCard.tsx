@@ -1,5 +1,7 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useUser } from '@clerk/nextjs'
+import { useRouter } from 'next/navigation'
 import { Card, CardHeader, CardTitle, CardBody, CardActions } from '@progress/kendo-react-layout'
 import { Button } from '@progress/kendo-react-buttons'
 import { Input, TextArea } from '@progress/kendo-react-inputs'
@@ -24,8 +26,18 @@ interface CodeProps extends ComponentProps<'code'> {
 }
 
 const RetrievalCard = () => {
+  const { user } = useUser()
+  const router = useRouter()
   const [question, setQuestion] = useState('')
   const [loading, setLoading] = useState(false)
+  
+  useEffect(() => {
+    if (!user) {
+      router.push('/sign-in')
+      return
+    }
+  }, [user, router])
+
   const [open, setOpen] = useState(false)
   const [response, setResponse] = useState('')
   const isDarkMode = useDarkMode()

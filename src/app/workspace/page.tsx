@@ -1,5 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
+import { useUser } from '@clerk/nextjs'
+import { useRouter } from 'next/navigation'
 import { Dialog } from '@progress/kendo-react-dialogs'
 import { Card, CardHeader, CardTitle, CardBody } from '@progress/kendo-react-layout'
 import { DateTimePicker } from '@progress/kendo-react-dateinputs'
@@ -29,11 +31,20 @@ interface Project {
 }
 
 const WorkSpace = () => {
+  const { user } = useUser()
+  const router = useRouter()
   const [selectedQuestion, setSelectedQuestion] = useState<any>(null)
   const [selectedProjectId, setSelectedProjectId] = useState<string>('')
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const isDarkMode = useDarkMode()
-  const { projects } = GetProject()
+
+  useEffect(() => {
+    if (!user) {
+      router.push('/sign-in')
+      return
+    }
+  }, [user, router])
+
+  const { projects } = user ? GetProject() : { projects: [] }
 
   const { data: questions, isLoading } = api.project.getQuestions.useQuery(
     {

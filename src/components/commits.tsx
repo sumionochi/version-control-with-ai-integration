@@ -1,6 +1,7 @@
 'use client'
 
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
+import { useUser } from '@clerk/nextjs'
 import { api } from '@/trpc/react'
 import React, { useRef } from 'react'
 import { Loader } from "@progress/kendo-react-indicators";
@@ -24,10 +25,20 @@ interface CodeProps extends ComponentProps<'code'> {
 }
 
 const Commits = () => {
-  const params = useParams();
-  const isDarkMode = useDarkMode();
-  const { projects } = GetProject();
-  const currentProject = projects?.find(project => project.id === params.id);
+  const { user } = useUser()
+  const router = useRouter()
+  const params = useParams()
+  const isDarkMode = useDarkMode()
+  
+  React.useEffect(() => {
+    if (!user) {
+      router.push('/sign-in')
+      return
+    }
+  }, [user, router])
+
+  const { projects } = user ? GetProject() : { projects: [] }
+  const currentProject = projects?.find(project => project.id === params.id)
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const { data: commits } = api.project.getCommits.useQuery({ 
     projectId: params.id as string 
