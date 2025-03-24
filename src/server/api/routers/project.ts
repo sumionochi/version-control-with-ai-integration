@@ -1,6 +1,7 @@
 import { pollCommits } from "@/lib/githubFunctions";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { z } from "zod";  
+import { stepTwoIndexGithubRepoFiles } from "@/lib/githubFileLangchain";
 
 export const projectRouter = createTRPCRouter({
     createProject: protectedProcedure
@@ -23,6 +24,7 @@ export const projectRouter = createTRPCRouter({
             }
           }
         })
+        await stepTwoIndexGithubRepoFiles(project.id, input.githubUrl, input.githubToken)
         await pollCommits(project.id)
         return project
       }),  
@@ -43,6 +45,7 @@ export const projectRouter = createTRPCRouter({
       projectId: z.string()
     }))
     .query(async ({ ctx, input }) => {
+      pollCommits(input.projectId).then().catch(console.error)
       return await ctx.db.commit.findMany({ 
         where: { projectId: input.projectId } 
       });

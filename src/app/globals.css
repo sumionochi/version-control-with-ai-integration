@@ -433,3 +433,65 @@
   background-color: var(--background-secondary);
   border-color: var(--border-color);
 }
+
+
+/* Dark mode styles */
+.dark {
+  --bg-primary: rgba(0, 0, 0, 0.5);
+  --text-primary: #ffffff;
+  --text-secondary: #94a3b8;
+  --bg-secondary: #1e1e1e;
+  --bg-tertiary: #2d2d2d;
+  --border-color: #424242;
+}
+
+/* Light mode styles */
+.light {
+  --bg-primary: #ffffff;
+  --text-primary: #000000;
+  --text-secondary: #64748b;
+  --bg-secondary: #f1f5f9;
+  --bg-tertiary: #e2e8f0;
+  --border-color: #e5e7eb;
+}
+
+/* Markdown editor styles */
+.wmde-markdown {
+  background-color: transparent !important;
+}
+
+/* Dialog styles */
+.k-dialog {
+  border-radius: 0.5rem !important;
+}
+
+.k-dialog-dark {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
+.k-dialog-dark .k-dialog-titlebar {
+  background-color: var(--bg-tertiary) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+/* TextArea styles */
+.k-textarea {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+.k-textarea:focus {
+  border-color: #3b82f6 !important;
+}
+
+/* Button styles */
+.k-button.k-primary {
+  background-color: #3b82f6 !important;
+  border-color: #3b82f6 !important;
+}
+
+.k-button.k-primary:hover {
+  background-color: #2563eb !important;
+}

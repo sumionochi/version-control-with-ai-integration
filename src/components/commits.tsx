@@ -4,8 +4,8 @@ import { useParams } from 'next/navigation'
 import { api } from '@/trpc/react'
 import React, { useRef } from 'react'
 import { Loader } from "@progress/kendo-react-indicators";
-import { Stepper, TileLayout } from '@progress/kendo-react-layout';
-import { checkIcon, arrowLeftIcon, arrowRightIcon, paperclipIcon, hyperlinkOpenIcon, xIcon} from '@progress/kendo-svg-icons';
+import { Avatar, Stepper, TileLayout } from '@progress/kendo-react-layout';
+import { clockIcon, arrowLeftIcon, arrowRightIcon, paperclipIcon, hyperlinkOpenIcon, xIcon, userIcon} from '@progress/kendo-svg-icons';
 import { useDarkMode } from '@/hooks/useDarkMode';
 import { Button } from "@progress/kendo-react-buttons";
 import Image from 'next/image';
@@ -13,6 +13,15 @@ import { Fade } from "@progress/kendo-react-animation";
 import GetProject from '@/hooks/getProjects';
 import Link from 'next/link';
 import { Popup } from '@progress/kendo-react-popup';
+import { SvgIcon } from '@progress/kendo-react-common';
+import MDEditor from '@uiw/react-md-editor';
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import { ComponentProps } from 'react'
+
+interface CodeProps extends ComponentProps<'code'> {
+  inline?: boolean;
+}
 
 const Commits = () => {
   const params = useParams();
@@ -93,7 +102,7 @@ const Commits = () => {
 
   const stepperItems = commits.map(commit => ({
     label: new Date(commit.commitDate).toDateString(),
-    svgIcon: checkIcon,
+    svgIcon: clockIcon,
     identifier: commit.commitHash,
     onClick: () => handleStepperClick(commit.commitHash)
   }));
@@ -111,14 +120,18 @@ const Commits = () => {
         className={`flex items-center gap-3 p-2 transition-all duration-500 ease-in-out
           ${focusedTile === commit.commitHash ? 'bg-orange-500/20 rounded-lg' : ''}`}
       >
-        <Image
+        {commit.commitAuthorAvatar ? (<Image
           src={commit.commitAuthorAvatar}
           alt={commit.commitAuthorName}
-          width={24}
-          height={24}
+          width={28}
+          height={28}
           className="rounded-full"
-        />
-        <span className="font-medium">{commit.commitAuthorName}</span>
+        />) : (<div className='rounded-full bg-gray-300 w-7 h-7 flex justify-center items-center'>
+              <SvgIcon icon={userIcon} />
+        </div>)}
+        <span className={`font-medium ${isDarkMode ? 'text-white' : 'text-black'}`}>
+          {commit.commitAuthorName}
+        </span>
         <span className="text-gray-500">committed on {new Date(commit.commitDate).toLocaleDateString()}</span>
       </div>
       </Fade>
@@ -129,12 +142,14 @@ const Commits = () => {
           <Link href={currentProject.githubUrl + '/commit/' + commit.commitHash} target="_blank" 
                 rel="noopener noreferrer"
                 className="hover:underline">
-            <Button svgIcon={hyperlinkOpenIcon} className="mt-1" />
+            <div className='bg-gray-300 p-2 rounded-lg'>
+              <SvgIcon icon={hyperlinkOpenIcon} className="hover:text-orange-300 hover:dark:text-orange-700" />
+            </div>
           </Link>
           <div>
             <div 
               onClick={(e) => handleMessageClick(commit.commitMessage, e.currentTarget)}
-              className="cursor-pointer hover:text-blue-500 transition-colors"
+              className="cursor-pointer hover:text-orange-500 transition-colors"
             >
               <h3 className="font-semibold">{commit.commitMessage.split('\n')[0]}</h3>
             </div>
@@ -143,8 +158,31 @@ const Commits = () => {
             </code>
           </div>
         </div>
-        <div className="text-sm whitespace-pre-wrap pl-6">
-          {commit.summary}
+        <div className="text-sm pl-6" data-color-mode={isDarkMode ? 'dark' : 'light'}>
+          <div className="max-h-[160px] overflow-y-auto">
+            <MDEditor.Markdown 
+              source={commit.summary} 
+              components={{
+                code: (props: CodeProps) => {
+                  const {inline, children, className} = props
+                  const match = /language-(\w+)/.exec(className || '')
+                  return !inline && match ? (
+                    <SyntaxHighlighter
+                      style={vscDarkPlus}
+                      language={match[1]}
+                      PreTag="div"
+                    >
+                      {String(children).replace(/\n$/, '')}
+                    </SyntaxHighlighter>
+                  ) : (
+                    <code className={className}>
+                      {children}
+                    </code>
+                  )
+                }
+              }}
+            />
+          </div>
         </div>
       </div>
     ),
@@ -190,14 +228,14 @@ const Commits = () => {
           </div>
         </div>    
       </div>
-      <div>
-        <div className="flex items-center justify-between mb-4">
+      <div className='w-full'>
+        <div className="flex items-center justify-between mb-4 w-full">
         <TileLayout
           columns={3}
           rowHeight={300}
           gap={{ rows: 16, columns: 10 }}
           items={tiles}
-          className={`commit-tiles ${isDarkMode ? 'dark' : 'light'}`}
+          className={`commit-tiles w-full ${isDarkMode ? 'dark' : 'light'}`}
         />
         </div>      
       </div>
