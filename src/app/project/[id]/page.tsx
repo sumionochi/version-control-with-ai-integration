@@ -8,7 +8,7 @@ import { Card, CardHeader, CardBody, CardTitle, CardActions, CardImage } from '@
 import { Button } from '@progress/kendo-react-buttons';
 import { folderIcon, linkIcon } from '@progress/kendo-svg-icons';
 import { SvgIcon } from "@progress/kendo-react-common";
-import Commits from '../../../components/Commits';
+import Commits from '@/components/Commits';
 import { useDarkMode } from '@/hooks/useDarkMode';
 import RetrievalCard from '@/components/RetrievalCard';
 
